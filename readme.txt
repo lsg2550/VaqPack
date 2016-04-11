@@ -22,3 +22,6 @@ The names are:
    in a file).
 7. WeeklySchedulerTab (the GUI).
 
+In this second commit I changed the GUI a little bit (created a menuBar instead of the buttons).
+For the moment the only working menu is Interval (updates the table with the chosen time increment).
+
