@@ -6,16 +6,22 @@
 package WeeklyScheduler;
 
 import javafx.application.Application;
+import javafx.beans.Observable;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,17 +32,49 @@ import javafx.stage.Stage;
  */
 public class WeeklySchedulerTab extends Application {
     
-    private TableView<TableRows> table;
-    private int timeIncrement = 60;
-    private Button btUser, btCourse, btTime, btBackground, btGridLines, 
-            btFullScreen;
-    private Table coursesTable = new Table(timeIncrement, 
-            new MyDetails().getMyCourseDetails());
-    private String[][] fields = coursesTable.createTable();
+    
+    private final TableView<TableRows> table = new TableView<>();
+    private final IntegerProperty timeIncrement = new SimpleIntegerProperty();
+    private final VBox coursesBox = new VBox();
+    private final MenuBar menuBar = new MenuBar();
+    private Table coursesTable;
+    private String[][] fields;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         
+        createMenuBar();
+        createTableView();
+        createCoursesBox();
+        
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getChildren().addAll(table, coursesBox);
+        VBox.setMargin(table, new Insets(30, 30, 10, 40));
+        
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        menuBar.prefWidthProperty().bind(table.widthProperty().add(70));
+        vBox.minWidthProperty().bind(menuBar.widthProperty().add(-20));
+        vBox.maxWidthProperty().bind(menuBar.widthProperty().add(-20));
+        
+        BorderPane bp = new BorderPane();
+        bp.setCenter(scrollPane);
+        bp.setTop(menuBar);
+
+        Scene scene = new Scene(bp);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("VaqPack Weekly Schedule!");
+        primaryStage.show();
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+    public void createTableView() {
         //Time column
         TableColumn<TableRows, String> timeColumn = new TableColumn<>("");
         timeColumn.setMinWidth(85);
@@ -73,82 +111,108 @@ public class WeeklySchedulerTab extends Application {
         fridayColumn.setStyle("-fx-alignment: CENTER;");
         fridayColumn.setCellValueFactory(new PropertyValueFactory<>("fridayCell"));
         
-        table = new TableView<>();
-        table.setItems(getCells());
         table.getColumns().addAll(timeColumn, mondayColumn, tuesdayColumn, 
                 wednesdayColumn, thursdayColumn, fridayColumn);
-        table.setFixedCellSize(30);
-        double tableHeight = fields.length * 30 + 32;
-        table.setPrefHeight(tableHeight);
+        table.setStyle("-fx-alignment: CENTER;");
         
-        btUser = new Button();
-        btUser.setText("Add/Change new user");
-        btUser.setMinWidth(200);
-        
-        btCourse = new Button();
-        btCourse.setText("Add new course");
-        btCourse.setMinWidth(200);
-        
-        btTime = new Button();
-        btTime.setText("Change time interval");
-        btTime.setMinWidth(200);
-        
-        btBackground = new Button();
-        btBackground.setText("Change Background Color");
-        btBackground.setMinWidth(200);
-        
-        btGridLines = new Button();
-        btGridLines.setText("Show Grid Lines");
-        btGridLines.setMinWidth(200);
-        
-        btFullScreen = new Button();
-        btFullScreen.setText("Switch to Full Screen");
-        btFullScreen.setMinWidth(200);
-        
-        VBox vBoxLeft = new VBox();
-        vBoxLeft.setPadding(new Insets(20,20,20,20));
-        vBoxLeft.getChildren().addAll(btUser, btCourse, btTime);
-        
-        VBox vBoxRight = new VBox();
-        vBoxRight.setPadding(new Insets(20,20,20,20));
-        vBoxRight.getChildren().addAll(btBackground, btGridLines, btFullScreen);
-        
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(vBoxLeft, table, vBoxRight);
-        
-        int increment = 20;
-        int numberOfCourses = coursesTable.getCourses().length;
-        Text tNumberOfCourses = new Text(600, tableHeight + increment, 
-                Integer.toString(numberOfCourses) + " Course(s):");
-        
-        Pane pane = new Pane();
-        pane.getChildren().addAll(hBox, tNumberOfCourses);
-        for (int i = 0; i < numberOfCourses; i++) {
-            increment += 20;
-            pane.getChildren().add(new Text(600, tableHeight + increment, 
-                    coursesTable.getCourses()[i].getCourseP() + " " + 
-                            coursesTable.getCourses()[i].getCourseD()));
-        }
-
-        Scene scene = new Scene(pane);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("VaqPack Weekly Schedule!");
-        primaryStage.show();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+        timeIncrement.addListener((Observable ov) -> {
+            coursesTable = new Table(timeIncrement.get(), new MyDetails().getMyCourseDetails());
+            fields = coursesTable.createTable();
+            table.setItems(getCells(fields));
+            table.setFixedCellSize(30);
+            table.setMinHeight(fields.length * 30 + 32);
+            table.setMaxHeight(fields.length * 30 + 32);
+            table.setMinWidth(962);
+            table.setMaxWidth(962);
+        });
+        timeIncrement.set(60);
     }
     
-    public ObservableList<TableRows> getCells() {
+    public ObservableList<TableRows> getCells(String[][] fields) {
         ObservableList<TableRows> cells = FXCollections.observableArrayList();
         for (String[] field : fields) {
             cells.add(new TableRows(field[0], field[1], field[2], field[3], 
                     field[4], field[5]));
         }
         return cells;
+    }
+    
+    public void createCoursesBox() {
+        int numberOfCourses = coursesTable.getCourses().size();
+        Text tNumberOfCourses = new Text(Integer.toString(numberOfCourses) + 
+                " Course(s):");
+        coursesBox.getChildren().add(tNumberOfCourses);
+        for (int i = 0; i < numberOfCourses; i++) {
+            coursesBox.getChildren().add(new Text(
+                    coursesTable.getCourses().get(i).getCourseP() + " " + 
+                            coursesTable.getCourses().get(i).getCourseD()));
+        }
+        coursesBox.setAlignment(Pos.CENTER);
+    }
+    
+    public void createMenuBar() {
+        // Courses menu
+        Menu courses = new Menu("Courses");
+        
+        // Courses menu items
+        MenuItem add = new MenuItem("Add");
+        Menu delete = new Menu("Delete");
+        Menu modify = new Menu("Modify");
+        
+        // Add items to courses menu
+        courses.getItems().addAll(add, delete, modify);
+        
+        // Interval menu
+        Menu interval = new Menu("Interval");
+        
+        // Interval menu items
+        MenuItem sixty = new MenuItem("60");
+        sixty.setOnAction(e -> timeIncrement.set(60));
+        
+        MenuItem thirty = new MenuItem("30");
+        thirty.setOnAction(e -> timeIncrement.set(30));
+        
+        MenuItem fifteen = new MenuItem("15");
+        fifteen.setOnAction(e -> timeIncrement.set(15));
+        
+        // Add items to interval menu
+        interval.getItems().addAll(sixty, thirty, fifteen);
+        
+        // View menu
+        Menu view = new Menu("View");
+        
+        // View menu items
+        Menu color = new Menu("Color");
+        Menu font = new Menu("Font");
+        Menu background = new Menu("Background");
+        
+        // color subMenu items
+        MenuItem color1 = new MenuItem("color1");
+        MenuItem color2 = new MenuItem("color2");
+        MenuItem color3 = new MenuItem("color3");
+        
+        // Add items to color subMenu
+        color.getItems().addAll(color1, color2, color3);
+        
+        // font subMenu items
+        MenuItem font1 = new MenuItem("font1");
+        MenuItem font2 = new MenuItem("font2");
+        MenuItem font3 = new MenuItem("font3");
+        
+        // Add items to font subMenu
+        font.getItems().addAll(font1, font2, font3);
+        
+        // background subMenu items
+        MenuItem background1 = new MenuItem("background1");
+        MenuItem background2 = new MenuItem("background2");
+        MenuItem background3 = new MenuItem("background3");
+        
+        // Add items to background subMenu
+        background.getItems().addAll(background1, background2, background3);
+        
+        // Add items to view menu
+        view.getItems().addAll(color, font, background);
+        
+        menuBar.getMenus().addAll(courses, interval, view);
     }
 }

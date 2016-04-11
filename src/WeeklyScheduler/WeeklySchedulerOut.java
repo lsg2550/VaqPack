@@ -1,15 +1,19 @@
 package WeeklyScheduler;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class WeeklySchedulerOut {
     private PersonalInfo student = new PersonalInfo();
     private int timeIncrement = 60;
-    private CourseDetails[] courses = new CourseDetails[timeIncrement];
+    private List<CourseDetails> courses = new ArrayList<>();
     
     public WeeklySchedulerOut() {
     }
     
     public WeeklySchedulerOut(PersonalInfo student, int timeIncrement, 
-            CourseDetails[] courses) {
+            List<CourseDetails> courses) {
         this.student = student;
         this.timeIncrement = timeIncrement;
         this.courses = courses;
@@ -108,11 +112,11 @@ public class WeeklySchedulerOut {
         this.timeIncrement = timeIncrement;
     }
 
-    public CourseDetails[] getCourses() {
+    public List<CourseDetails> getCourses() {
         return courses;
     }
 
-    public void setCourses(CourseDetails[] courses) {
+    public void setCourses(List<CourseDetails> courses) {
         this.courses = courses;
     }
 }

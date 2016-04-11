@@ -1,4 +1,7 @@
 package WeeklyScheduler;
+
+import java.util.List;
+
 public class CourseDetails {
     private String courseP;
     private String courseD;
@@ -20,11 +23,11 @@ public class CourseDetails {
         this.end = end;
     }
     
-    public int[][] convertTimeToInt(CourseDetails[] x) {
-        int[][] y = new int[x.length][2];
-        for (int i = 0; i < x.length; i++) {
-            String[] tempStart = x[i].getStart().split("[:, ]");
-            String[] tempEnd = x[i].getEnd().split("[:, ]");
+    public int[][] convertTimeToInt(List<CourseDetails> x) {
+        int[][] y = new int[x.size()][2];
+        for (int i = 0; i < x.size(); i++) {
+            String[] tempStart = x.get(i).getStart().split("[:, ]");
+            String[] tempEnd = x.get(i).getEnd().split("[:, ]");
             y[i][0] = Integer.parseInt(tempStart[0] + tempStart[1]);
             y[i][1] = Integer.parseInt(tempEnd[0] + tempEnd[1]);
             if (!tempStart[0].contains("12") && tempStart[2].contains("PM"))
@@ -35,16 +38,16 @@ public class CourseDetails {
         return y;
     }
     
-    public String checkInterference(CourseDetails[] x) {
+    public String checkInterference(List<CourseDetails> x) {
         String warning = "";
         int[][] y = convertTimeToInt(x);
-        for (int i = x.length - 1; i > 0; i--) {
+        for (int i = x.size() - 1; i > 0; i--) {
             for (int j = 0; j < i; j++) {
-                if (x[i] != null) {
-                    if (sameDay(x[i].getDay(), x[j].getDay()) && 
+                if (x.get(i) != null) {
+                    if (sameDay(x.get(i).getDay(), x.get(j).getDay()) && 
                             twoClassesInterfere(y[i], y[j]))
-                        warning += "The classes " + x[i].getCourseP() + " and " 
-                                + x[j].getCourseP() + " interfere.;";
+                        warning += "The classes " + x.get(i).getCourseP() + " and " 
+                                + x.get(j).getCourseP() + " interfere.;";
                 }
             }
         }
