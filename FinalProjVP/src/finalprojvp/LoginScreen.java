@@ -6,6 +6,7 @@
 package finalprojvp;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,52 +30,88 @@ public class LoginScreen extends Application{
     
     
     
-    Scene signInScene, registerScene;
-    
+    private Scene signInScene, registerScene;
+    private BorderPane mainWindow;
        
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        
-        
+  
  /*****************************************************************************
-Sign In Window
+                Sign In Window
  ******************************************************************************/
-        BorderPane borderPane = new BorderPane(); //Creates borderPane 
-       
+ 
+        mainWindow = new BorderPane(); //Creates borderPane 
+        mainWindow.setCenter(getSignInGrid());
         
-        GridPane grid = new GridPane(); //Create GridPane. Will display in center of borderPane
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+        signInScene = new Scene(mainWindow);
+        primaryStage.setScene(signInScene);
+        primaryStage.setTitle("UTRGV VaqPack");
+        primaryStage.show();
+        primaryStage.setFullScreen(true); //Sets to Full Screen
+        
+    }
+
+    private GridPane getSignInGrid(){
+        
+         /*****************************************************************************
+                   Sign In Widow
+        ******************************************************************************/
+         
+        GridPane signInGrid = new GridPane(); //Create GridPane. Will display in center of borderPane
+        signInGrid.setAlignment(Pos.CENTER);
+        signInGrid.setHgap(10);
+        signInGrid.setVgap(10);
+        signInGrid.setPadding(new Insets(25, 25, 25, 25));
         
         Text scenetitle = new Text("Welcome");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 2, 1);
+        signInGrid.add(scenetitle, 0, 0, 2, 1);
         
         Label userName = new Label("User Name:");
-        grid.add(userName, 0, 1);
+        signInGrid.add(userName, 0, 1);
         
         TextField userTextField = new TextField();
-        grid.add(userTextField, 1, 1);
+        signInGrid.add(userTextField, 1, 1);
         
         Label pw = new Label("Password:");
-        grid.add(pw, 0, 2);
+        signInGrid.add(pw, 0, 2);
         
         PasswordField pwBox = new PasswordField();
-        grid.add(pwBox, 1, 2);
+        signInGrid.add(pwBox, 1, 2);
+    
+       Button signInBtn = new Button("Sign in");  //Sign In Button
+       signInBtn.setMaxWidth(Double.MAX_VALUE);
+       
+       //New User 
+       Button registerBtn = new Button("Register"); //Register Buttton
+       registerBtn.setOnAction((ActionEvent e) -> {
+           mainWindow.setCenter(getRegistrationForm());
+               });
+       
+       //HBox to hold Sign up and Sign In Button 
+       HBox hbBtn = new HBox(10);
+       hbBtn.setAlignment(Pos.BOTTOM_CENTER);
+       hbBtn.getChildren().addAll(registerBtn, signInBtn);
+       signInGrid.add(hbBtn, 1, 4);
+//       
+
+        return signInGrid;
+    }
+    
+    private GridPane getRegistrationForm(){
         
-/*****************************************************************************
-Register Window 
- ******************************************************************************/
+        /*****************************************************************************
+                    Registration Form Window 
+        ******************************************************************************/
+            
         GridPane regGridPane = new GridPane();
         regGridPane.setAlignment(Pos.CENTER);
         regGridPane.setHgap(10);
         regGridPane.setVgap(10);
         regGridPane.setPadding(new Insets(25,25,25,25));
         
-        Text regSceneTitle = new Text("Registering Form");
+        Text regSceneTitle = new Text("Registration Form");
         regSceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         regGridPane.add(regSceneTitle, 0, 0);
         
@@ -124,50 +161,15 @@ Register Window
         TextField passwordField = new TextField();
         regGridPane.add(passwordField, 1, 9);
         
+        Button submitBtn = new Button("Submit");
+        submitBtn.setAlignment(Pos.CENTER);
+        regGridPane.add(submitBtn, 1, 10);
+        submitBtn.setOnAction((ActionEvent e) -> {
+            mainWindow.setCenter(getSignInGrid());
+        });
         
-        
-        
-                
-        
-        
-        
-        
-/*****************************************************************************
- Add Button: sign in, sign up
- Set Button in HBOX 
- Assign button handling
- ******************************************************************************/
-
-       //Add button 
-       Button signInBtn = new Button("Sign in");
-       
-       //New User 
-       Button registerBtn = new Button("Register");
-       registerBtn.setOnAction(e -> primaryStage.setScene(registerScene));
-       
-       
-       //HBox to hold Sign up and Sign In Button 
-       HBox hbBtn = new HBox(10);
-       hbBtn.setAlignment(Pos.BOTTOM_CENTER);
-       hbBtn.getChildren().addAll(registerBtn, signInBtn);
-       grid.add(hbBtn, 1, 4);
-       
-/*****************************************************************************
- ******************************************************************************/   
-
-
-        borderPane.setCenter(grid);
-        
-        signInScene = new Scene(borderPane);
-        registerScene = new Scene(regGridPane, 700, 700);
-        
-        primaryStage.setScene(signInScene);
-       
-        primaryStage.setTitle("UTRGV VaqPack");
-        
-        primaryStage.show();
-        
-        primaryStage.setFullScreen(true); //Sets to Full Screen
+        return regGridPane;
+    }
     
-}
+//    private VBox 
 }
