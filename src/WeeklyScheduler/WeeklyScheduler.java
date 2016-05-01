@@ -5,6 +5,7 @@
  */
 package WeeklyScheduler;
 
+import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -19,9 +21,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -29,7 +33,7 @@ import javafx.scene.control.Alert.AlertType;
  *
  * @author Anton
  */
-public class WeeklySchedulerTab {
+public class WeeklyScheduler extends Application {
     
     
     private final TableView<TableRows> table = new TableView<>();
@@ -39,7 +43,8 @@ public class WeeklySchedulerTab {
     private Table coursesTable;
     private String[][] fields;
     
-    public void create(BorderPane BP) {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         
         createMenuBar();
         createTableView();
@@ -51,6 +56,7 @@ public class WeeklySchedulerTab {
         VBox.setMargin(table, new Insets(30, 30, 10, 40));
         
         ScrollPane scrollPane = new ScrollPane(vBox);
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         vBox.minWidthProperty().bind(menuBar.widthProperty().add(-20));
         vBox.maxWidthProperty().bind(menuBar.widthProperty().add(-20));
         
@@ -58,9 +64,21 @@ public class WeeklySchedulerTab {
         bp.setCenter(scrollPane);
         bp.setTop(menuBar);
 
-        BP.setTop(bp);
+        Scene scene = new Scene(bp);
+        primaryStage.getIcons().add(new Image("pictures/utrgv.png"));
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Weekly Scheduler!");
+        primaryStage.setMaximized(true);
+        primaryStage.show();
     }
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
     public void createTableView() {
         //Time column
         TableColumn<TableRows, String> timeColumn = new TableColumn<>("");
