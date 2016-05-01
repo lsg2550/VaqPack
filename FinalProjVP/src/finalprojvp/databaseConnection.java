@@ -8,15 +8,15 @@ package finalprojvp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 /**
  *
  * @author Joaquin
  */
-public class login 
-{
-    public static void main(String[] args) {
-        Connection conn = null;
+public class databaseConnection {
+    Connection conn = null;
+        
+    
+    public void DataBaseConnection(){
         
         
         try{
@@ -34,3 +34,4 @@ public class login
     }
     
 }
+

@@ -21,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -36,12 +35,18 @@ import javafx.stage.Stage;
  */
 public class LoginScreen extends Application{
     
+    private databaseConnection dbconnection;
+    
     
     private GeneralInfoGUI genInfoGUI;
     
     private Scene startScene, registerScene, mainWindowScene;
     private BorderPane signInWindow;
     private Stage window;
+    
+    private BorderPane bottomPane;
+    private GridPane signInGrid;
+    GridPane regGridPane;
     
     private MenuBar mb = new MenuBar();                                     //Menu Bar
     private Menu mList = new Menu("Menu");                                  //Menu Item
@@ -79,12 +84,14 @@ public class LoginScreen extends Application{
         mb.getMenus().addAll(mList);
         mList.getItems().addAll(calendar, weeklyScheduler, genInfo, logout);
         
-        BorderPane bottomPane = new BorderPane();
+        bottomPane = new BorderPane();
        
         VBox vb = new VBox();
         vb.getChildren().addAll(mb, bottomPane);
         
         logout.setOnAction((ActionEvent e) -> {
+           mb.getMenus().clear();
+           mList.getItems().clear();
            window.setScene(startScene);
            window.setTitle("UTRGV VaqPack");
            window.show();
@@ -110,7 +117,7 @@ public class LoginScreen extends Application{
                    Sign In Widow
         ******************************************************************************/
          
-        GridPane signInGrid = new GridPane(); //Create GridPane. Will display in center of borderPane
+        signInGrid = new GridPane(); //Create GridPane. Will display in center of borderPane
         signInGrid.setAlignment(Pos.CENTER);
         signInGrid.setHgap(10);
         signInGrid.setVgap(10);
@@ -166,7 +173,7 @@ public class LoginScreen extends Application{
                     Registration Form Window 
         ******************************************************************************/
             
-        GridPane regGridPane = new GridPane();
+        regGridPane = new GridPane();
         regGridPane.setAlignment(Pos.CENTER);
         regGridPane.setHgap(10);
         regGridPane.setVgap(10);
