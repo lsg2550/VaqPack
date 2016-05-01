@@ -57,8 +57,9 @@ public class WeeklySchedulerTab {
         BorderPane bp = new BorderPane();
         bp.setCenter(scrollPane);
         bp.setTop(menuBar);
-
-        BP.setTop(bp);
+        
+        BP.getChildren().clear();
+        BP.setCenter(bp);
     }
 
     public void createTableView() {
