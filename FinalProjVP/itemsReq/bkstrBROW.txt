@@ -1,0 +1,15 @@
+Brownsville Campus:
+Address: 83 Fort Brown St, Brownsville, TX 78520
+Phone: (956) 882-8249
+Hours:
+Day		Hours
+Mon		7:30am-6:00pm
+Tue		7:30am-6:00pm
+Wed		7:30am-6:00pm
+Thu		7:30am-6:00pm
+Fri		7:30am-4:00pm
+Sat		CLOSED
+Sun		CLOSED
+
+Want to know about Edinburg's bookstore information? 
+	Change the campus to Edinburg.
