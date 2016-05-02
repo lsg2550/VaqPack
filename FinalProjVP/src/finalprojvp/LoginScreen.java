@@ -13,9 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -30,6 +27,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import infoTab.GUI;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 
 /**
  *
@@ -49,13 +49,22 @@ public class LoginScreen extends Application {
     private BorderPane changingPane;
     private GridPane signInGrid;
     GridPane regGridPane;
+    
+    
+    private TabPane tabPane = new TabPane();
+    private Tab genInfo = new Tab("General Informatioin");
+    private Tab weeklyScheduler = new Tab("Weekly Scheduler");
+    private Tab calendar = new Tab("Calendar");
+    
+    private BorderPane ws = new WeeklySchedulerTab();
 
-    private MenuBar mb = new MenuBar();                                     //Menu Bar
-    private Menu mList = new Menu("Menu");                                  //Menu Item
-    private MenuItem calendar = new MenuItem("Calendar");                      //Calendar
-    private MenuItem weeklyScheduler = new MenuItem("Weekly Scheduler");              //WeeklyScheduler
-    private MenuItem genInfo = new MenuItem("General Information");           //General Information
-    private MenuItem logout = new MenuItem("Log Out");
+
+//    private MenuBar mb = new MenuBar();                                     //Menu Bar
+//    private Menu mList = new Menu("Menu");                                  //Menu Item
+//    private MenuItem calendar = new MenuItem("Calendar");                      //Calendar
+//    private MenuItem weeklyScheduler = new MenuItem("Weekly Scheduler");              //WeeklyScheduler
+//    private MenuItem genInfo = new MenuItem("General Information");           //General Information
+//    private MenuItem logout = new MenuItem("Log Out");
 
     private GUI gui = new GUI();
 
@@ -68,17 +77,14 @@ public class LoginScreen extends Application {
          * Sign In Window
  *****************************************************************************
          */
-        weeklyScheduler.setOnAction((ActionEvent e) -> {
-
-            weekTab.create(holderPane);
-        });
-
-        genInfo.setOnAction((ActionEvent e) -> {
-            holderPane.setCenter(changingPane);
-            gui.UI(changingPane);
-        gui.changeListener(changingPane);
-        });
-
+        
+        //Tab generator 
+        tabPane.getTabs().addAll(genInfo, weeklyScheduler, calendar);
+        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        gui.launch();
+        genInfo.setContent(gui.getBp());
+        weeklyScheduler.setContent(ws);
+        
         signInWindow = new BorderPane(); //Creates borderPane 
         signInWindow.setCenter(getSignInGrid());
 
@@ -93,24 +99,25 @@ public class LoginScreen extends Application {
 
     private Scene getMainWindowScene() {
 
-        //MenuBar
-        mb.getMenus().addAll(mList);
-        mList.getItems().addAll(calendar, weeklyScheduler, genInfo, logout);
+        
+//        //MenuBar
+//        mb.getMenus().addAll(mList);
+//        mList.getItems().addAll(calendar, weeklyScheduler, genInfo, logout);
 
         holderPane = new BorderPane();
         changingPane = new BorderPane();
 
         VBox vb = new VBox(56);
-        vb.getChildren().addAll(mb, holderPane);
+        vb.getChildren().addAll(tabPane, holderPane);
 
-        logout.setOnAction((ActionEvent e) -> {
-            mb.getMenus().clear();
-            mList.getItems().clear();
-            window.setScene(startScene);
-            window.setTitle("UTRGV VaqPack");
-            window.show();
-            window.setFullScreen(true); //Sets to Full Screen
-        });
+//        logout.setOnAction((ActionEvent e) -> {
+////            mb.getMenus().clear();
+////            mList.getItems().clear();
+//            window.setScene(startScene);
+//            window.setTitle("UTRGV VaqPack");
+//            window.show();
+//            window.setFullScreen(true); //Sets to Full Screen
+//        });
 
 //        genInfo.setOnAction((ActionEvent e) -> {
 //            holderPane.setCenter(genInfoGUI);

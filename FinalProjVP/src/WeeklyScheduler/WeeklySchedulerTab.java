@@ -29,7 +29,7 @@ import javafx.scene.control.Alert.AlertType;
  *
  * @author Anton
  */
-public class WeeklySchedulerTab {
+public class WeeklySchedulerTab extends BorderPane {
     
     
     private final TableView<TableRows> table = new TableView<>();
@@ -39,7 +39,7 @@ public class WeeklySchedulerTab {
     private Table coursesTable;
     private String[][] fields;
     
-    public void create(BorderPane BP) {
+    public WeeklySchedulerTab() {
         
         createMenuBar();
         createTableView();
@@ -54,12 +54,9 @@ public class WeeklySchedulerTab {
         vBox.minWidthProperty().bind(menuBar.widthProperty().add(-20));
         vBox.maxWidthProperty().bind(menuBar.widthProperty().add(-20));
         
-        BorderPane bp = new BorderPane();
-        bp.setCenter(scrollPane);
-        bp.setTop(menuBar);
-        
-        BP.getChildren().clear();
-        BP.setCenter(bp);
+
+        this.setCenter(scrollPane);
+        this.setTop(menuBar);
     }
 
     public void createTableView() {
