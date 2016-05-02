@@ -8,7 +8,7 @@ public class InformationLauncher {
     GUI gui = new GUI();
 
     public void start(BorderPane bp) {
-        gui.launch(bp);
+//        gui.launch(bp);
     }
 
     

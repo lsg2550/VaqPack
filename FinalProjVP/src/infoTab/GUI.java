@@ -29,8 +29,7 @@ public class GUI {
 
     //Create UI Components
     private BorderPane bp = new BorderPane();
-    Pane pane = new Pane();
-    Scene scene = new Scene(pane);
+    Scene scene = new Scene(bp);
     VBox cbVB = new VBox();                         //verticalBox; For choicebox
     VBox diVB = new VBox();                         //defaultImage; For default image & text, or maybe for all images
     VBox wcVB = new VBox();                         //welcomeCenter; will have the campus choicebox above the welcTxt text
@@ -66,10 +65,12 @@ public class GUI {
     //Declare Variable
     private Boolean campus;                         //Brownsville = true; Edinburg = false; No Campus Selected = Null;
 
-    public void launch(BorderPane bp) {
+    public void launch() {
+        changeListener();
+        UI();
     }
 
-    public BorderPane UI(BorderPane bp) {
+    private void UI() {
         //CAMPUS TEXT
         campTxt.setText("Pick your campus:");
         campTxt.setFont(Font.font(null, FontWeight.EXTRA_BOLD, 16));
@@ -147,8 +148,6 @@ public class GUI {
 
         bp.setStyle("-fx-background-image: url(itemsReq/oBG.gif); -fx-background-size: contain; -fx-background-position: center; -fx-background-repeat: no-repeat;");
         bp.setCenter(wcVB);
-
-        return bp;
         /*
         infoTab.getIcons().add(new Image("itemsReq/utrgv.png"));
         infoTab.setTitle("Important Information");
@@ -160,9 +159,9 @@ public class GUI {
 
     /* BEGIN LISTENERS FOR UI */
     //Listens to changes within information, student major, campus etc etc...
-    public void changeListener(BorderPane bp) {
+    private void changeListener() {
         wCB.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-            ccBListener(bp);
+            ccBListener();
             //iCB.setValue("Campus Map");
             //infoListener();
         });
@@ -178,7 +177,7 @@ public class GUI {
         });
         iCB.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             try {
-                infoListener(bp);
+                infoListener();
             } catch (Exception ex) {
                 System.err.print(ex);               //Shouldn't be reached anymore
             }
@@ -194,7 +193,7 @@ public class GUI {
     }
 
     //Listens for which information tab is selected
-    private void infoListener(BorderPane bp) {
+    private void infoListener() {
         //Clear previous cases
         hlHB.setVisible(false);
         //majoTxt.setVisible(false);
@@ -233,7 +232,7 @@ public class GUI {
     }
 
     //Listens for which Campus is selected at welcTxt screen
-    private void ccBListener(BorderPane bp) {
+    private void ccBListener() {
         bp.setCenter(null);
         bp.setTop(cbVB);
         infoTxt.setVisible(true);
@@ -241,4 +240,8 @@ public class GUI {
         cCB.setValue(wCB.getValue());
     }
     /*END LISTENERS FOR UI*/
+
+    public BorderPane getBp() {
+        return bp;
+    }
 }
