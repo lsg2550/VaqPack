@@ -54,8 +54,8 @@ public class WeeklySchedulerTab extends BorderPane {
         
         ScrollPane scrollPane = new ScrollPane(vBox);
         
-        this.setCenter(scrollPane);
-        this.setTop(menuBar);
+        setCenter(scrollPane);
+        setTop(menuBar);
     }
 
     private void createTableView() {
@@ -191,7 +191,8 @@ public class WeeklySchedulerTab extends BorderPane {
         Menu color = new Menu("Color");
         Menu font = new Menu("Font");
         Menu background = new Menu("Background");
-        
+        MenuItem def = new MenuItem("Default");
+                
         // color subMenu items
         MenuItem color1 = new MenuItem("color1");
         MenuItem color2 = new MenuItem("color2");
@@ -225,7 +226,7 @@ public class WeeklySchedulerTab extends BorderPane {
         background.getItems().addAll(background1, background2, background3);
         
         // Add items to view menu
-        view.getItems().addAll(color, font, background);
+        view.getItems().addAll(color, font, background, def);
         
         menuBar.getMenus().addAll(courses, interval, view);
     }

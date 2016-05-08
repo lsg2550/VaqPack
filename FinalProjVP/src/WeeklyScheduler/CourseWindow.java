@@ -327,7 +327,7 @@ public class CourseWindow extends Stage {
             return true;
         }
         
-        if (sp.contains("PM") && (sh == 11 || sh == 12 || (sh == 10 && sm > 0))) {
+        if (sp.contains("PM") && (sh == 11 || (sh == 10 && sm > 0))) {
             error.setText(error.getText().concat(timeError));
             return true;
         }
