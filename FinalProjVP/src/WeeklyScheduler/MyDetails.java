@@ -23,7 +23,7 @@ public class MyDetails {
         my.add(new CourseDetails("CSCI-3340", "Software Engineering I", 
                 "Main 1.514", class_0_1_2, "10:50 AM", "12:05 PM"));
         my.add(new CourseDetails("CSCI-4318", "Cyber Security",  "LHSB 1.402",
-                class_0_1_2, "01:40 PM", "2:55 PM"));
+                class_0_1_2, "01:40 PM", "02:55 PM"));
         my.add(new CourseDetails("CSCI-3336", "Organization of Program Lang", 
                 "SETB 1.506", class_3_4, "10:50 AM", "12:05 AM"));
         my.add(new CourseDetails("CSCI-4310", "Design & Analysis of Algorithm", 

@@ -52,11 +52,9 @@ public class LoginScreen extends Application {
     
     
     private TabPane tabPane = new TabPane();
-    private Tab genInfo = new Tab("General Informatioin");
+    private Tab genInfo = new Tab("General Information");
     private Tab weeklyScheduler = new Tab("Weekly Scheduler");
     private Tab calendar = new Tab("Calendar");
-    
-    private BorderPane ws = new WeeklySchedulerTab();
 
 
 //    private MenuBar mb = new MenuBar();                                     //Menu Bar
@@ -83,7 +81,7 @@ public class LoginScreen extends Application {
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         gui.launch();
         genInfo.setContent(gui.getBp());
-        weeklyScheduler.setContent(ws);
+        weeklyScheduler.setContent(weekTab);
         
         signInWindow = new BorderPane(); //Creates borderPane 
         signInWindow.setCenter(getSignInGrid());
@@ -109,6 +107,7 @@ public class LoginScreen extends Application {
 
         VBox vb = new VBox(56);
         vb.getChildren().addAll(tabPane, holderPane);
+        tabPane.minHeightProperty().bind(window.heightProperty());
 
 //        logout.setOnAction((ActionEvent e) -> {
 ////            mb.getMenus().clear();
@@ -163,7 +162,7 @@ public class LoginScreen extends Application {
         signInBtn.setOnAction((ActionEvent e) -> {
 
             window.setScene(getMainWindowScene());
-            window.setFullScreen(true);
+            window.setMaximized(true);
         });
 
         //New User 
