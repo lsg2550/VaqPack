@@ -45,13 +45,16 @@ public class CourseWindow extends Stage {
     // All labels
     private Label pLabel, dLabel, lLabel, daysLabel, startTimeLabel, endTimeLabel;
     
-    //CheckBoxes for days
+    // CheckBoxes for days
     private CheckBox[] daysList = new CheckBox[5];
     
+    // Starting times
     private ChoiceBox<String> startHour, startMinutes, startPeriod;
     
+    // Ending times
     private ChoiceBox<String> endHour, endMinutes, endPeriod;
     
+    // Buttons OK and Cancel
     private Button btOK, btCancel;
     
     public CourseWindow() {
@@ -335,7 +338,7 @@ public class CourseWindow extends Stage {
             return true;
         }
         
-        if (ep.contains("PM") && (eh == 11 || eh == 12 || (eh == 10 && em > 0))) {
+        if (ep.contains("PM") && (eh == 11 || (eh == 10 && em > 0))) {
             error.setText(error.getText().concat(timeError));
             return true;
         }
