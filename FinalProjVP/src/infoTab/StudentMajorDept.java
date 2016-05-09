@@ -7,11 +7,10 @@ import javafx.scene.web.WebEngine;
 
 public class StudentMajorDept {
 
-    public void smD(ChoiceBox<String> cb, Hyperlink hl, WebEngine en) {
+    public void smD(ChoiceBox<String> cb, Hyperlink hl) {
         switch (cb.getValue()) {
             case "Accounting":
                 hl.setText("http://www.utrgv.edu/cobe/departments/accountancy/index.htm");
-                en.load(hl.getText());
                 break;
             case "Anthropology":
                 hl.setText("http://www.utrgv.edu/en-us/academics/colleges/liberal-arts/sociology-and-anthropology/index.htm");

@@ -1,5 +1,6 @@
 package WeeklyScheduler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDetails {
@@ -24,6 +25,7 @@ public class CourseDetails {
     }
     
     public int[][] convertTimeToInt(List<CourseDetails> x) {
+        
         int[][] y = new int[x.size()][2];
         for (int i = 0; i < x.size(); i++) {
             String[] tempStart = x.get(i).getStart().split("[:, ]");
@@ -40,16 +42,17 @@ public class CourseDetails {
     
     public String checkInterference(List<CourseDetails> x) {
         String warning = "";
+        if (x.isEmpty())
+            return warning;
+        List<CourseDetails> list = new ArrayList<>();
+        list.add(this);
+        int[][] thisCourse = convertTimeToInt(list);
         int[][] y = convertTimeToInt(x);
-        for (int i = x.size() - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (x.get(i) != null) {
-                    if (sameDay(x.get(i).getDay(), x.get(j).getDay()) && 
-                            twoClassesInterfere(y[i], y[j]))
-                        warning += "The classes " + x.get(i).getCourseP() + " and " 
-                                + x.get(j).getCourseP() + " interfere.;";
-                }
-            }
+        for (int i = 0; i < x.size(); i++) {
+            if (sameDay(this.getDay(), x.get(i).getDay()) && 
+                    twoClassesInterfere(thisCourse[0], y[i]))
+                warning += "The class " + this.getCourseP() + 
+                        " interferes with " + x.get(i).getCourseP() + "\n";              
         }
         return warning;
     }
@@ -116,6 +119,11 @@ public class CourseDetails {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+    
+    @Override
+    public String toString() {
+        return getCourseP() + " " + getCourseD() + "  " + getStart() + " - " + getEnd();
     }
 
 }

@@ -6,6 +6,7 @@
 package finalprojvp;
 
 import WeeklyScheduler.WeeklySchedulerTab;
+import calendar.MyCalendar;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -13,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -27,9 +27,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import infoTab.GUI;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -37,9 +40,42 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
  */
 public class LoginScreen extends Application {
 
+    
+    private UserQueries userQueries = new UserQueries();
+   
+    
+    private Label studentID;
+    private TextField studentIDField;
+    private Label password;
+    private PasswordField passwordField;
+    private Label firstName;
+    private TextField firstNameField;
+    private Label lastName;
+    private TextField lastNameField;
+    private Label email;
+    private TextField emailField;
+    private Label phoneNumber;
+    private TextField phoneNumberField;
+    private Label address;
+    private TextField addressField;
+    private Label city;
+    private TextField cityField;
+    private Label state;
+    private TextField stateField;
+    private Label zip;
+    private TextField zipField;
+    private Label major;
+    private TextField majorField;
+    private Label classification;
+    private TextField classificationField;
+    private Button submitBtn;
+    private Button registerBtn;
+    private Button cancelBtn;
+    private final Label errorMessage = new Label();
+    
     private WeeklySchedulerTab weekTab = new WeeklySchedulerTab();
-
-    private databaseConnection dbconnection;
+    
+    private MyCalendar mycalendar = new MyCalendar(); 
 
     private Scene startScene, registerScene, mainWindowScene;
     private BorderPane signInWindow;
@@ -49,34 +85,30 @@ public class LoginScreen extends Application {
     private BorderPane changingPane;
     private GridPane signInGrid;
     GridPane regGridPane;
-    
-    
+   
     private TabPane tabPane = new TabPane();
     private Tab genInfo = new Tab("General Informatioin");
     private Tab weeklyScheduler = new Tab("Weekly Scheduler");
     private Tab calendar = new Tab("Calendar");
-    
+    private StackPane header = new StackPane();
+
     private BorderPane ws = new WeeklySchedulerTab();
-
-
-//    private MenuBar mb = new MenuBar();                                     //Menu Bar
-//    private Menu mList = new Menu("Menu");                                  //Menu Item
-//    private MenuItem calendar = new MenuItem("Calendar");                      //Calendar
-//    private MenuItem weeklyScheduler = new MenuItem("Weekly Scheduler");              //WeeklyScheduler
-//    private MenuItem genInfo = new MenuItem("General Information");           //General Information
-//    private MenuItem logout = new MenuItem("Log Out");
-
+   
+    private Button logoutBtn = new Button("Logout");
+ 
     private GUI gui = new GUI();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-
+        
         /**
          * ***************************************************************************
          * Sign In Window
  *****************************************************************************
          */
+        
+       
         
         //Tab generator 
         tabPane.getTabs().addAll(genInfo, weeklyScheduler, calendar);
@@ -84,44 +116,58 @@ public class LoginScreen extends Application {
         gui.launch();
         genInfo.setContent(gui.getBp());
         weeklyScheduler.setContent(ws);
+        mycalendar.launch();
+        calendar.setContent(mycalendar.getRoot());
+        
+        //Header generator
+        
+        logoutBtn.setStyle("-fx-font: 18 arial; -fx-base: #b6e7c9;");
+        header.getChildren().addAll(tabPane, logoutBtn);
+        StackPane.setAlignment(logoutBtn, Pos.TOP_RIGHT);
         
         signInWindow = new BorderPane(); //Creates borderPane 
         signInWindow.setCenter(getSignInGrid());
 
         startScene = new Scene(signInWindow);
 
+        
         window.setScene(startScene);
         window.setTitle("UTRGV VaqPack");
         window.show();
         window.setFullScreen(true); //Sets to Full Screen
+        
+       
 
+        
+        logoutBtn.setOnAction((ActionEvent e) -> {
+//            mb.getMenus().clear();
+//            mList.getItems().clear();
+
+            errorMessage.setText("");
+            window.setScene(startScene);
+            window.setTitle("UTRGV VaqPack");
+            window.show();
+            window.setFullScreen(true); //Sets to Full Screen
+            
+            
+        });
+        
+       
     }
 
     private Scene getMainWindowScene() {
 
-        
-//        //MenuBar
-//        mb.getMenus().addAll(mList);
-//        mList.getItems().addAll(calendar, weeklyScheduler, genInfo, logout);
+       
 
         holderPane = new BorderPane();
         changingPane = new BorderPane();
 
         VBox vb = new VBox(56);
-        vb.getChildren().addAll(tabPane, holderPane);
+        vb.getChildren().addAll(header, holderPane);
 
-//        logout.setOnAction((ActionEvent e) -> {
-////            mb.getMenus().clear();
-////            mList.getItems().clear();
-//            window.setScene(startScene);
-//            window.setTitle("UTRGV VaqPack");
-//            window.show();
-//            window.setFullScreen(true); //Sets to Full Screen
-//        });
-
-//        genInfo.setOnAction((ActionEvent e) -> {
-//            holderPane.setCenter(genInfoGUI);
-//        });
+        //Set tabPane hegiht 
+        tabPane.minHeightProperty().bind(window.heightProperty());
+        
         mainWindowScene = new Scene(vb, 600, 600);
 
         return mainWindowScene;
@@ -146,39 +192,53 @@ public class LoginScreen extends Application {
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
         signInGrid.add(scenetitle, 1, 1);
 
-        Label userName = new Label("User Name:");
-        signInGrid.add(userName, 0, 2);
+        studentID = new Label("Student ID:");
+        signInGrid.add(studentID, 0, 2);
 
-        TextField userTextField = new TextField();
-        signInGrid.add(userTextField, 1, 2);
+        studentIDField = new TextField();
+        signInGrid.add(studentIDField, 1, 2);
 
-        Label pw = new Label("Password:");
-        signInGrid.add(pw, 0, 3);
+        password = new Label("Password:");
+        signInGrid.add(password, 0, 3);
 
-        PasswordField pwBox = new PasswordField();
-        signInGrid.add(pwBox, 1, 3);
+        passwordField = new PasswordField();
+        signInGrid.add(passwordField, 1, 3);
 
         Button signInBtn = new Button("Login");  //Sign In Button
         signInBtn.setMaxWidth(Double.MAX_VALUE);
         signInBtn.setOnAction((ActionEvent e) -> {
-
-            window.setScene(getMainWindowScene());
-            window.setFullScreen(true);
+                
+                if (userQueries.passwordAuthentication(studentIDField.getText(), passwordField.getText() ) == 1)
+                {
+                     window.setScene(getMainWindowScene());
+                          window.setFullScreen(true);
+                }
+                else
+                {
+                    errorMessage.setText("Incorrect Student ID or Password!");
+                    errorMessage.setTextFill(Color.RED);
+                }
+                
+                studentIDField.clear();
+                passwordField.clear();
+                
         });
 
         //New User 
-        Button registerBtn = new Button("Register"); //Register Buttton
+        registerBtn = new Button("Register"); //Register Buttton
         registerBtn.setMaxWidth(Double.MAX_VALUE);
         registerBtn.setOnAction((ActionEvent e) -> {
             signInWindow.setCenter(getRegistrationForm());
+   
         });
 
-        //HBox to hold Sign up and Sign In Button 
+        //HBox to hold register btn and  login Button 
         HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_CENTER);
+        hbBtn.setAlignment(Pos.CENTER_RIGHT);
         hbBtn.getChildren().addAll(registerBtn, signInBtn);
         signInGrid.add(hbBtn, 1, 4);
-//       
+        
+        signInGrid.add(errorMessage, 1, 5);
 
         return signInGrid;
     }
@@ -201,72 +261,83 @@ public class LoginScreen extends Application {
         regGridPane.add(regSceneTitle, 0, 0);
 
         //Declare and set Labels
-        Label id = new Label("ID:");
-        regGridPane.add(id, 0, 1);
-        TextField idField = new TextField();
-        regGridPane.add(idField, 1, 1);
+        studentID = new Label("Student ID:");
+        regGridPane.add(studentID, 0, 1);
+        studentIDField = new TextField();
+        regGridPane.add(studentIDField, 1, 1);
 
-        Label password = new Label("Password:");
+        password = new Label("Password:");
         regGridPane.add(password, 0, 2);
-        TextField passwordField = new TextField();
+        passwordField = new PasswordField();
         regGridPane.add(passwordField, 1, 2);
 
-        Label firstName = new Label("First Name:");
+        firstName = new Label("First Name:");
         regGridPane.add(firstName, 0, 3);
-        TextField firstNameField = new TextField();
+        firstNameField = new TextField();
         regGridPane.add(firstNameField, 1, 3);
 
-        Label lastName = new Label("Last Name:");
+        lastName = new Label("Last Name:");
         regGridPane.add(lastName, 0, 4);
-        TextField lastNameField = new TextField();
+        lastNameField = new TextField();
         regGridPane.add(lastNameField, 1, 4);
 
-        Label email = new Label("Email:");
+        email = new Label("Email:");
         regGridPane.add(email, 0, 5);
-        TextField emailField = new TextField();
+        emailField = new TextField();
         regGridPane.add(emailField, 1, 5);
 
-        Label bday = new Label("Birthday:");
-        regGridPane.add(bday, 0, 6);
-        TextField bdayField = new TextField();
-        regGridPane.add(bdayField, 1, 6);
+        phoneNumber = new Label("Phone Number:");
+        regGridPane.add(phoneNumber, 0, 6);
+        phoneNumberField = new TextField();
+        regGridPane.add(phoneNumberField, 1, 6);
 
-        Label address = new Label("Address:");
+        address = new Label("Address:");
         regGridPane.add(address, 0, 7);
-        TextField addressField = new TextField();
+        addressField = new TextField();
         regGridPane.add(addressField, 1, 7);
 
-        Label city = new Label("City:");
+        city = new Label("City:");
         regGridPane.add(city, 0, 8);
-        TextField cityField = new TextField();
+        cityField = new TextField();
         regGridPane.add(cityField, 1, 8);
 
-        Label state = new Label("State:");
+        state = new Label("State:");
         regGridPane.add(state, 0, 9);
-        TextField stateField = new TextField();
+        stateField = new TextField();
         regGridPane.add(stateField, 1, 9);
 
-        Label zip = new Label("Zip:");
+        zip = new Label("Zip:");
         regGridPane.add(zip, 0, 10);
-        TextField zipField = new TextField();
+        zipField = new TextField();
         regGridPane.add(zipField, 1, 10);
 
-        Label major = new Label("Major:");
+        major = new Label("Major:");
         regGridPane.add(major, 0, 11);
-        TextField majorField = new TextField();
+        majorField = new TextField();
         regGridPane.add(majorField, 1, 11);
 
-        Label classification = new Label("Classification:");
+        classification = new Label("Classification:");
         regGridPane.add(classification, 0, 12);
-        TextField classificationField = new TextField();
+        classificationField = new TextField();
         regGridPane.add(classificationField, 1, 12);
-
-        Button submitBtn = new Button("Submit");
-        submitBtn.setAlignment(Pos.CENTER);
-        regGridPane.add(submitBtn, 1, 13);
-        submitBtn.setOnAction((ActionEvent e) -> {
-            signInWindow.setCenter(getSignInGrid());
+     
+        submitBtn = new Button("Submit");
+        submitBtn.setOnAction((ActionEvent ew) -> {
+          submitButtonActionPerformed(ew);
+          errorMessage.setText("");
         });
+       
+        //cancel button 
+        cancelBtn = new Button("Cancel");
+        cancelBtn.setOnAction((ActionEvent e) -> {
+            submitButtonActionPerformed(e);
+          errorMessage.setText("");
+        });
+        
+        HBox canSubBox = new HBox(10);
+        canSubBox.setAlignment(Pos.CENTER_RIGHT);
+        canSubBox.getChildren().addAll(cancelBtn, submitBtn);
+        regGridPane.add(canSubBox, 1, 13);
 
         return regGridPane;
     }
@@ -279,5 +350,32 @@ public class LoginScreen extends Application {
 
         return icon;
     }
+    
+    private void submitButtonActionPerformed (ActionEvent e) { 
+        
+        userQueries.addUser(studentIDField.getText(), passwordField.getText(),
+                firstNameField.getText(), lastNameField.getText(), emailField.getText(), 
+                phoneNumberField.getText(), addressField.getText(), cityField.getText(), 
+                stateField.getText(), zipField.getText(), majorField.getText(), classificationField.getText());
+        
+        signInWindow.setCenter(getSignInGrid());
+        
+    }
 
+    /**
+     * @return the studentIDField
+     */
+    public TextField getStudentIDField() {
+        return studentIDField;
+    }
+
+    /**
+     * @return the passwordField
+     */
+    public PasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    
 }
+

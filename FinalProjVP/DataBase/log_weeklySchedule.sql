@@ -16,38 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `userInfo`
+-- Table structure for table `weeklySchedule`
 --
 
-DROP TABLE IF EXISTS `userInfo`;
+DROP TABLE IF EXISTS `weeklySchedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `userInfo` (
-  `StudentID` varchar(45) NOT NULL,
-  `Password` varchar(45) NOT NULL,
-  `FirstName` varchar(45) NOT NULL,
-  `LastName` varchar(45) NOT NULL,
-  `Email` varchar(45) NOT NULL,
-  `PhoneNumber` varchar(45) NOT NULL,
-  `Address` varchar(45) NOT NULL,
-  `City` varchar(45) NOT NULL,
-  `State` varchar(45) NOT NULL,
-  `Zip` varchar(45) NOT NULL,
-  `Classification` varchar(45) NOT NULL,
-  `Major` varchar(45) NOT NULL,
-  PRIMARY KEY (`StudentID`),
-  UNIQUE KEY `id_UNIQUE` (`StudentID`)
+CREATE TABLE `weeklySchedule` (
+  `courseP` int(11) NOT NULL,
+  `courseD` varchar(45) NOT NULL,
+  `location` varchar(45) NOT NULL,
+  `day` varchar(45) NOT NULL,
+  `start` varchar(45) NOT NULL,
+  `end` varchar(45) NOT NULL,
+  `StudentID` varchar(45) DEFAULT NULL,
+  UNIQUE KEY `StudentID_UNIQUE` (`StudentID`),
+  CONSTRAINT `StudentID` FOREIGN KEY (`StudentID`) REFERENCES `userInfo` (`StudentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `userInfo`
+-- Dumping data for table `weeklySchedule`
 --
 
-LOCK TABLES `userInfo` WRITE;
-/*!40000 ALTER TABLE `userInfo` DISABLE KEYS */;
-INSERT INTO `userInfo` VALUES ('','','','','','','','','','','',''),('admin','password','','','','','','','','','','');
-/*!40000 ALTER TABLE `userInfo` ENABLE KEYS */;
+LOCK TABLES `weeklySchedule` WRITE;
+/*!40000 ALTER TABLE `weeklySchedule` DISABLE KEYS */;
+/*!40000 ALTER TABLE `weeklySchedule` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
