@@ -16,31 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `weeklySchedule`
+-- Table structure for table `data`
 --
 
-DROP TABLE IF EXISTS `weeklySchedule`;
+DROP TABLE IF EXISTS `data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `weeklySchedule` (
-  `courseP` varchar(45) NOT NULL,
-  `courseD` varchar(45) NOT NULL,
-  `location` varchar(45) NOT NULL,
-  `day` varchar(45) NOT NULL,
-  `start` varchar(45) NOT NULL,
-  `end` varchar(45) NOT NULL,
-  `StudentID` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `commitments` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `weeklySchedule`
+-- Dumping data for table `data`
 --
 
-LOCK TABLES `weeklySchedule` WRITE;
-/*!40000 ALTER TABLE `weeklySchedule` DISABLE KEYS */;
-INSERT INTO `weeklySchedule` VALUES ('CMPE','Software Engineering','UTRGV','00010','08:00 AM','9:00 AM','4321'),('MATH','ALGEBRA','UTRGV','10000','8:00 AM','10:00 AM','4321');
-/*!40000 ALTER TABLE `weeklySchedule` ENABLE KEYS */;
+LOCK TABLES `data` WRITE;
+/*!40000 ALTER TABLE `data` DISABLE KEYS */;
+INSERT INTO `data` VALUES (1,'asdf','[null\nnull]');
+/*!40000 ALTER TABLE `data` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -46,7 +46,7 @@ CREATE TABLE `userInfo` (
 
 LOCK TABLES `userInfo` WRITE;
 /*!40000 ALTER TABLE `userInfo` DISABLE KEYS */;
-INSERT INTO `userInfo` VALUES ('','','','','','','','','','','',''),('admin','password','','','','','','','','','','');
+INSERT INTO `userInfo` VALUES ('1234','1234','','','','','','','','','',''),('4321','4321','','','','','','','','','','');
 /*!40000 ALTER TABLE `userInfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-09 17:34:04
+-- Dump completed on 2016-05-10  2:16:57
