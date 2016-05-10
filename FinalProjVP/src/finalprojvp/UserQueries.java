@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -126,12 +127,10 @@ public class UserQueries {
             myresultset = mystatement.executeQuery("SELECT * FROM userInfo");
 
             mystatement2 = connection.createStatement();
-                            myresultset2 = mystatement2.executeQuery("SELECT * FROM weeklySchedule");
+            myresultset2 = mystatement2.executeQuery("SELECT * FROM weeklySchedule WHERE StudentID='" + id + "'");
                             searchDatabase(id);
-//                            System.out.println(list.get(0).getCourseD());
-//                                                        System.out.println(list.get(1).getCourseP());
-//
-//                                                                                    System.out.println(list.get(2).getCourseP());
+                            System.out.println(list.get(0).getCourseD() + " " + list.get(1).getCourseD());
+                                         
 
             while (myresultset.next()) {
                 if (myresultset.getString("StudentID").equals(id)) {
@@ -226,13 +225,13 @@ public class UserQueries {
         return y;
     }
 
-    public void searchDatabase(String studentID) {
-        CourseDetails x = new CourseDetails();
+    public ObservableList<CourseDetails> searchDatabase(String studentID) {
+
 
         try {
 
             while (myresultset2.next()) {
-                if (myresultset2.getString("StudentID").equalsIgnoreCase(studentID)) {
+                CourseDetails x = new CourseDetails();
                     String day = (myresultset2.getString("day"));
                     x.setCourseP(myresultset2.getString("courseP"));
                     x.setCourseD(myresultset2.getString("courseD"));
@@ -241,8 +240,6 @@ public class UserQueries {
                     x.setStart(myresultset2.getString("start"));
                     x.setEnd(myresultset2.getString("end"));
                     list.add(x);
-                 
-                }
 
             }
                 
@@ -250,7 +247,7 @@ public class UserQueries {
 
             System.err.print(e);
         }
-
+         return list;
     }
 
     /**

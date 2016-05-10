@@ -61,7 +61,7 @@ public class MyCalendar{
         int month = date.getMonthValue();
 
         int week = 1;
-        System.out.println(date);
+//        System.out.println(date);
         GridPane gp = new GridPane();
         gp.addRow(0, getWeekDays());
         while (date.getMonthValue() == month) {
@@ -69,7 +69,7 @@ public class MyCalendar{
                 week++;
             }
             gp.add(displayDay(date.getDayOfMonth()), date.getDayOfWeek().getValue() % 7, week);
-            System.out.println(week + "   " + date.getDayOfWeek().getValue());
+//            System.out.println(week + "   " + date.getDayOfWeek().getValue());
             date = date.plusDays(1);
         }
         buttons.getChildren().addAll(asd, delete, store, retrive);

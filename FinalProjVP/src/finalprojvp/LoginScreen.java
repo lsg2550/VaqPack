@@ -28,11 +28,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import infoTab.GUI;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.PasswordField;
@@ -220,7 +216,8 @@ public class LoginScreen extends Application {
                 {
                      window.setScene(getMainWindowScene());
                           window.setFullScreen(true);
-                          weekTab.setCoursesList(userQueries.getList());
+                          
+                                 
                 }
                 else
                 {
@@ -230,9 +227,7 @@ public class LoginScreen extends Application {
                  
                 studentIDField.clear();
                 passwordField.clear();
-                
-                
-                
+
         });
 
         //New User 
@@ -403,4 +398,3 @@ public class LoginScreen extends Application {
 
 
 
-//        weekTab.setCoursesList(userQueries.getList());

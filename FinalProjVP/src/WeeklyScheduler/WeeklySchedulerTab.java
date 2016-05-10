@@ -5,6 +5,9 @@
  */
 package WeeklyScheduler;
 
+import finalprojvp.UserQueries;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -52,6 +55,9 @@ public class WeeklySchedulerTab extends BorderPane {
     private StringProperty background = new SimpleStringProperty();
     private PieChart chart = new PieChart();
     private HBox hb = new HBox();
+    UserQueries querie = new UserQueries();
+    ResultSet y =  querie.getMyresultset2();
+    
     
     public WeeklySchedulerTab() {
         createStyling();
@@ -68,7 +74,7 @@ public class WeeklySchedulerTab extends BorderPane {
         vBox.prefHeightProperty().bind(heightProperty().add(-menuBar.getHeight()));
         vBox.prefWidthProperty().bind(widthProperty().add(-20));
         
-    
+        
     }
     
 
@@ -163,6 +169,39 @@ public class WeeklySchedulerTab extends BorderPane {
         });
 //        coursesList.addAll(new MyDetails().getMyCourseDetails());
 //        coursesList.clear();
+//try {
+//
+//            while (y.next()) {
+//                CourseDetails x = new CourseDetails();
+//                    String day = (y.getString("day"));
+//                    x.setCourseP(y.getString("courseP"));
+//                    x.setCourseD(y.getString("courseD"));
+//                    x.setLocation(y.getString("location"));
+//                    x.setDay(setDay(day));
+//                    x.setStart(y.getString("start"));
+//                    x.setEnd(y.getString("end"));
+//                    coursesList.add(x);
+//
+//            }
+//                
+//        } catch (SQLException e) {
+//
+//            System.err.print(e);
+//        }
+try {
+System.out.println(y.getString("courseP") + " ");
+}
+catch (Exception e) {
+    System.out.println("fuck");
+}
+    }
+    
+    public boolean[] setDay(String day) {
+        boolean[] y = {false, false, false, false, false};
+        for (int i = 0; i < y.length; i++) {
+            y[i] = day.charAt(i) == '1';
+        }
+        return y;
     }
     
     private ObservableList<TableRows> getCells(String[][] fields) {
