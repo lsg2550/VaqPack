@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,13 +24,14 @@ public class UserQueries {
     private ObservableList<CourseDetails> list = FXCollections.observableArrayList();
     private static final String URL = "jdbc:mysql://localhost:3306/log";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "password";
+    private static final String PASSWORD = "zaq12345";
 
     private Connection connection = null; //manages conncection 
     private ResultSet myresultset = null;
     private ResultSet myresultset2 = null;
     private PreparedStatement insertNewUser = null;
     private PreparedStatement insertNewCourse = null;
+    private PreparedStatement deleteCourses = null;
     private Statement mystatement = null;
     private Statement mystatement2 = null;
 
@@ -46,6 +46,7 @@ public class UserQueries {
                     "INSERT INTO userInfo " + "(StudentID, Password, FirstName, LastName, Email, PhoneNumber,"
                     + "Address, City, State, Zip, Major, Classification) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
         }//end try
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -128,8 +129,8 @@ public class UserQueries {
 
             mystatement2 = connection.createStatement();
             myresultset2 = mystatement2.executeQuery("SELECT * FROM weeklySchedule WHERE StudentID='" + id + "'");
-                            searchDatabase(id);
-                            System.out.println(list.get(0).getCourseD() + " " + list.get(1).getCourseD());
+//                            searchDatabase(id);
+//                            System.out.println(list.get(0).getCourseD() + " " + list.get(1).getCourseD());
                                          
 
             while (myresultset.next()) {
@@ -170,7 +171,11 @@ public class UserQueries {
     //add a course
     public void addCourse(String courseP, String courseD, String location, String day, String start, String end, String StudentID) {
         //set parameters, then execute insertNewUser
+//        weeklyQueries();
         try {
+            insertNewCourse = connection.prepareStatement(
+                    "INSERT INTO weeklySchedule " + "(courseP, courseD, location, day, start, end, StudentID) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             insertNewCourse.setString(1, courseP);
             insertNewCourse.setString(2, courseD);
             insertNewCourse.setString(3, location);
@@ -178,9 +183,9 @@ public class UserQueries {
             insertNewCourse.setString(5, start);
             insertNewCourse.setString(6, end);
             insertNewCourse.setString(7, StudentID);
-
+            insertNewCourse.executeUpdate();
             //inset the new entry; return # of rows updated
-            insertNewUser.executeUpdate();
+//            insertNewUser.executeUpdate();
         } //end try
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -188,6 +193,21 @@ public class UserQueries {
         } //end catch
 
     } //end class UserQueries
+    
+    public void deleteCourse(String id) {
+        try {
+//            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            //Create insert that adds a new entry into the database
+            deleteCourses = connection.prepareStatement(
+                    "DELETE FROM weeklySchedule WHERE StudentID='" + id + "'");
+            deleteCourses.executeUpdate();
+        }//end try
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            System.exit(1);
+        } //end catch
+    }
 
     /**
      * @return the myresultset2
@@ -225,7 +245,7 @@ public class UserQueries {
         return y;
     }
 
-    public ObservableList<CourseDetails> searchDatabase(String studentID) {
+    public ObservableList<CourseDetails> searchDatabase() {
 
 
         try {

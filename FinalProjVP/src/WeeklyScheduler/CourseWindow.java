@@ -15,6 +15,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -143,6 +144,7 @@ public class CourseWindow extends Stage {
         Scene scene = new Scene(bp);
         setScene(scene);
         setTitle("UTRGV VaqPack");
+        getIcons().add(new Image("itemsReq/utrgv.png"));
     }
     
     public void addCourse(List<CourseDetails> list) {
@@ -354,7 +356,7 @@ public class CourseWindow extends Stage {
                 error.setText(error.getText().concat(s));
                 return true;
             }
-            else if (sh > eh || (sh == eh && sm >= em)) {
+            else if (sh > eh && sh != 12 || (sh == eh && sm >= em)) {
                 error.setText(error.getText().concat(s));
                 return true;
             }

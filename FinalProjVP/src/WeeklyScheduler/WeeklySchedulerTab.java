@@ -5,9 +5,6 @@
  */
 package WeeklyScheduler;
 
-import finalprojvp.UserQueries;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,10 +26,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  *
@@ -55,15 +54,24 @@ public class WeeklySchedulerTab extends BorderPane {
     private StringProperty background = new SimpleStringProperty();
     private PieChart chart = new PieChart();
     private HBox hb = new HBox();
-    UserQueries querie = new UserQueries();
-    ResultSet y =  querie.getMyresultset2();
+//    UserQueries querie = new UserQueries();
+//    ResultSet y =  querie.getMyresultset2();
     
     
-    public WeeklySchedulerTab() {
+    public WeeklySchedulerTab(ObservableList<CourseDetails> list) {
         createStyling();
         createMenuBar();
         createTableView();
         
+        if (list.isEmpty()) {
+            createCoursesText();
+            times.clear();
+            times.addAll(new PieChart.Data("Available Time", 4200), new 
+            PieChart.Data("Busy Time", 0));
+        }
+        
+        coursesList.addAll(list);
+
         vBox.setPadding(new Insets(50,50,50,50));
         vBox.setAlignment(Pos.TOP_CENTER);
         
@@ -73,11 +81,8 @@ public class WeeklySchedulerTab extends BorderPane {
         setTop(menuBar);
         vBox.prefHeightProperty().bind(heightProperty().add(-menuBar.getHeight()));
         vBox.prefWidthProperty().bind(widthProperty().add(-20));
-        
-        
     }
     
-
     private void createTableView() {
         times.addListener((Observable ov) ->{
             chart.setData(times);
@@ -155,7 +160,7 @@ public class WeeklySchedulerTab extends BorderPane {
             vBox.getChildren().addAll(hb, coursesText);
         });
         timeIncrement.set(60);
-        
+
         coursesList.addListener((Observable ov) ->{
             String[][] fields = new Table(timeIncrement.get(), coursesList).createTable();
             table.setItems(getCells(fields));
@@ -167,33 +172,18 @@ public class WeeklySchedulerTab extends BorderPane {
             times.addAll(new PieChart.Data("Available Time", 4200 - busyMinutes()),
                     new PieChart.Data("Busy Time", busyMinutes()));
         });
-//        coursesList.addAll(new MyDetails().getMyCourseDetails());
-//        coursesList.clear();
-//try {
-//
-//            while (y.next()) {
-//                CourseDetails x = new CourseDetails();
-//                    String day = (y.getString("day"));
-//                    x.setCourseP(y.getString("courseP"));
-//                    x.setCourseD(y.getString("courseD"));
-//                    x.setLocation(y.getString("location"));
-//                    x.setDay(setDay(day));
-//                    x.setStart(y.getString("start"));
-//                    x.setEnd(y.getString("end"));
-//                    coursesList.add(x);
-//
-//            }
-//                
-//        } catch (SQLException e) {
-//
-//            System.err.print(e);
-//        }
-try {
-System.out.println(y.getString("courseP") + " ");
-}
-catch (Exception e) {
-    System.out.println("fuck");
-}
+    }
+    
+    private void coursesListListener() {
+        String[][] fields = new Table(timeIncrement.get(), coursesList).createTable();
+            table.setItems(getCells(fields));
+            createCoursesText();
+            delete.getItems().clear();
+            modify.getItems().clear();
+            editMenus(delete, modify);
+            times.clear();
+            times.addAll(new PieChart.Data("Available Time", 4200 - busyMinutes()),
+                    new PieChart.Data("Busy Time", busyMinutes()));
     }
     
     public boolean[] setDay(String day) {
@@ -214,11 +204,15 @@ catch (Exception e) {
     }
     
     private void createCoursesText() {
+        if (coursesList.isEmpty())
+            coursesText.setText("0 Course(s):\n\n\n\n");
+        else {
         String s = Integer.toString(coursesList.size()) + " Course(s):\n";
         for (int i = 0; i < coursesList.size(); i++) {
             s += coursesList.get(i).toString() + "\n";
         }
         coursesText.setText(s + "\n\n");
+        }
     }
     
     private void createMenuBar() {
@@ -373,6 +367,7 @@ catch (Exception e) {
                 alert.setTitle("UTRGV VaqPack");
                 alert.setHeaderText("Remove Course");
                 alert.setContentText("Are you sure you want to remove " + s + "?");
+                ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("itemsReq/utrgv.png")); 
                 alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK)
                     coursesList.remove(course);
@@ -456,8 +451,6 @@ catch (Exception e) {
      * @param coursesList the coursesList to set
      */
     public void setCoursesList(ObservableList<CourseDetails> coursesList) {
-        this.coursesList = coursesList;
+        this.coursesList = FXCollections.observableArrayList(coursesList);
     }
-    
-    
 }

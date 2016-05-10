@@ -28,9 +28,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import infoTab.GUI;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -47,7 +48,6 @@ public class LoginScreen extends Application {
    
 
     private UserQueries userQueries = new UserQueries();
-    private ObservableList<CourseDetails> list = FXCollections.observableArrayList();
     
     private Label studentID;
     private TextField studentIDField;
@@ -78,8 +78,6 @@ public class LoginScreen extends Application {
     private Button cancelBtn;
     private final Label errorMessage = new Label();
     
-    private WeeklySchedulerTab weekTab = new WeeklySchedulerTab();
-    
     private MyCalendar mycalendar = new MyCalendar(); 
 
     private Scene startScene, registerScene, mainWindowScene;
@@ -92,16 +90,17 @@ public class LoginScreen extends Application {
     GridPane regGridPane;
    
     private TabPane tabPane = new TabPane();
-    private Tab genInfo = new Tab("General Informatioin");
+    private Tab genInfo = new Tab("General Information");
     private Tab weeklyScheduler = new Tab("Weekly Scheduler");
     private Tab calendar = new Tab("Calendar");
     private StackPane header = new StackPane();
 
-    private BorderPane ws = new WeeklySchedulerTab();
+    private WeeklySchedulerTab ws;
    
     private Button logoutBtn = new Button("Logout");
  
     private GUI gui = new GUI();
+    private String id;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -120,7 +119,6 @@ public class LoginScreen extends Application {
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         gui.launch();
         genInfo.setContent(gui.getBp());
-        weeklyScheduler.setContent(ws);
         mycalendar.launch();
         calendar.setContent(mycalendar.getRoot());
         
@@ -146,17 +144,57 @@ public class LoginScreen extends Application {
         logoutBtn.setOnAction((ActionEvent e) -> {
 //            mb.getMenus().clear();
 //            mList.getItems().clear();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("UTRGV VaqPack");
+            alert.setHeaderText("Logout");
+            alert.setContentText("Are you sure you want to logout? (Changes will be saved)");
+            ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("itemsReq/utrgv.png")); 
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        ObservableList<CourseDetails> list = FXCollections.observableArrayList();
+                        list.addAll(ws.getCoursesList());
+                        userQueries.deleteCourse(id);
+                        for (int i = 0; i < list.size(); i++) {
+                           userQueries.addCourse(list.get(i).getCourseP(), list.get(i).getCourseD(),
+                                    list.get(i).getLocation(), booleanDayToString(list.get(i).getDay()),
+                                    list.get(i).getStart(), list.get(i).getEnd(), id);
+                        }
+                        System.exit(1);
+                    }
+                });
 
-            errorMessage.setText("");
-            window.setScene(startScene);
-            window.setTitle("UTRGV VaqPack");
-            window.show();
-            window.setFullScreen(true); //Sets to Full Screen
-            
+//            errorMessage.setText("");
+//            window.setScene(startScene);
+//            window.setTitle("UTRGV VaqPack");
+//            window.show();
+//            window.setFullScreen(true); //Sets to Full Screen
+        });
+            window.setOnCloseRequest(ev -> {
+            Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert2.setTitle("UTRGV VaqPack");
+            alert2.setHeaderText("Exit");
+            alert2.setContentText("Are you sure you want to exit? (Changes will not be saved)");
+            ((Stage)alert2.getDialogPane().getScene().getWindow()).getIcons().add(new Image("itemsReq/utrgv.png")); 
+                alert2.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        System.exit(1);
+                    }
+            });
             
         });
         
        
+    }
+    
+    private String booleanDayToString(boolean[] day) {
+        String s = "";
+        for (int i = 0; i < day.length; i++) {
+            if (day[i])
+                s += "1";
+            else
+                s += "0";
+        }
+        return s;
     }
 
     private Scene getMainWindowScene() {
@@ -172,7 +210,7 @@ public class LoginScreen extends Application {
         //Set tabPane hegiht 
         tabPane.minHeightProperty().bind(window.heightProperty());
         
-        mainWindowScene = new Scene(vb, 600, 600);
+        mainWindowScene = new Scene(vb);
 
         return mainWindowScene;
     }
@@ -213,11 +251,13 @@ public class LoginScreen extends Application {
         signInBtn.setOnAction((ActionEvent e) -> {
                 
                 if (userQueries.passwordAuthentication(studentIDField.getText(), passwordField.getText() ) == 1)
-                {
+                {   
+                    id = studentIDField.getText();
                      window.setScene(getMainWindowScene());
                           window.setFullScreen(true);
-                          
-                                 
+                          // Get database to the Weekly Scheduler as an observable list
+                          ws = new WeeklySchedulerTab(userQueries.searchDatabase());
+                          weeklyScheduler.setContent(ws);
                 }
                 else
                 {
@@ -372,6 +412,7 @@ public class LoginScreen extends Application {
         
 //        userQueries.addCourse(studentIDField.getText());
         
+        
         signInWindow.setCenter(getSignInGrid());
         
     }
@@ -391,9 +432,6 @@ public class LoginScreen extends Application {
     public PasswordField getPasswordField() {
         return passwordField;
     }
-
-    
-    
 }
 
 
