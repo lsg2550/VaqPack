@@ -144,6 +144,11 @@ public class GUI {
         bsktrTA.setEditable(true);
         contaTA.setEditable(true);
 
+        
+                gp.add(tf, 0, 0);
+                gp.add(btn, 1, 0);
+                gp.setAlignment(Pos.TOP_CENTER);
+        
         //SET UI
         hlHB.setVisible(false);
         cbVB.getChildren().addAll(campTxt, cCB, infoTxt, iCB, hlHB);
@@ -226,9 +231,6 @@ public class GUI {
                 cm.mapCAMP(cCB, cimgTxt, iV, contaTA);
                 break;
             case "Major Information":
-                gp.add(tf, 0, 0);
-                gp.add(btn, 1, 0);
-                gp.setAlignment(Pos.TOP_CENTER);
                 bp.setBottom(gp);
                 
                 hlHB.setVisible(true);

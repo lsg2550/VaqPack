@@ -124,7 +124,7 @@ public class LoginScreen extends Application {
         
         //Header generator
         
-        logoutBtn.setStyle("-fx-font: 18 arial; -fx-base: #b6e7c9;");
+        logoutBtn.setStyle("-fx-font: 21 arial; -fx-base: #b6e7c9;");
         header.getChildren().addAll(tabPane, logoutBtn);
         StackPane.setAlignment(logoutBtn, Pos.TOP_RIGHT);
         

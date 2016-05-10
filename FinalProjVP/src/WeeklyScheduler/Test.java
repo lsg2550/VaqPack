@@ -18,25 +18,25 @@ import javafx.stage.Stage;
  */
 public class Test extends Application {
     
-    BorderPane ws = new WeeklySchedulerTab();
-    Button btn = new Button();
-    StackPane root = new StackPane();
-    
-    @Override
-    public void start(Stage primaryStage) {
-        root.getChildren().add(btn);
-        btn.setText("Click me man!");
-        btn.setOnAction(e -> {
-                root.getChildren().clear();
-                root.getChildren().add(ws);
-        });
-        
-        Scene scene = new Scene(root, 1000, 700);
-        
-        primaryStage.setTitle("Test");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+//    BorderPane ws = new WeeklySchedulerTab();
+//    Button btn = new Button();
+//    StackPane root = new StackPane();
+//    
+//    @Override
+//    public void start(Stage primaryStage) {
+//        root.getChildren().add(btn);
+//        btn.setText("Click me man!");
+//        btn.setOnAction(e -> {
+//                root.getChildren().clear();
+//                root.getChildren().add(ws);
+//        });
+//        
+//        Scene scene = new Scene(root, 1000, 700);
+//        
+//        primaryStage.setTitle("Test");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+//    }
 
     /**
      * @param args the command line arguments
