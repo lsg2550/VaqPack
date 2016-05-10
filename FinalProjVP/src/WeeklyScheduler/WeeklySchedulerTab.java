@@ -45,7 +45,7 @@ public class WeeklySchedulerTab extends BorderPane {
     private final Menu delete = new Menu("Delete");
     private final Menu modify = new Menu("Modify");
     private final VBox vBox = new VBox(10);
-    private final ObservableList<CourseDetails> coursesList = FXCollections.observableArrayList();
+    private ObservableList<CourseDetails> coursesList = FXCollections.observableArrayList();
     private final ObservableList<PieChart.Data> times = FXCollections.observableArrayList();
     private StringProperty color = new SimpleStringProperty();
     private StringProperty font = new SimpleStringProperty();
@@ -161,7 +161,8 @@ public class WeeklySchedulerTab extends BorderPane {
             times.addAll(new PieChart.Data("Available Time", 4200 - busyMinutes()),
                     new PieChart.Data("Busy Time", busyMinutes()));
         });
-        coursesList.addAll(new MyDetails().getMyCourseDetails());
+//        coursesList.addAll(new MyDetails().getMyCourseDetails());
+//        coursesList.clear();
     }
     
     private ObservableList<TableRows> getCells(String[][] fields) {
@@ -403,6 +404,20 @@ public class WeeklySchedulerTab extends BorderPane {
         background.set("-fx-background-image: url(background2.jpg); "
                     + "-fx-background-size: contain; -fx-background-position: "
                     + "center; -fx-background-repeat: round");
+    }
+
+    /**
+     * @return the coursesList
+     */
+    public ObservableList<CourseDetails> getCoursesList() {
+        return coursesList;
+    }
+
+    /**
+     * @param coursesList the coursesList to set
+     */
+    public void setCoursesList(ObservableList<CourseDetails> coursesList) {
+        this.coursesList = coursesList;
     }
     
     

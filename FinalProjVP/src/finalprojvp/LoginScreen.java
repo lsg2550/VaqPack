@@ -5,6 +5,7 @@
  */
 package finalprojvp;
 
+import WeeklyScheduler.CourseDetails;
 import WeeklyScheduler.WeeklySchedulerTab;
 import calendar.MyCalendar;
 import javafx.application.Application;
@@ -27,6 +28,13 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import infoTab.GUI;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -40,9 +48,10 @@ import javafx.scene.paint.Color;
  */
 public class LoginScreen extends Application {
 
-    
-    private UserQueries userQueries = new UserQueries();
    
+
+    private UserQueries userQueries = new UserQueries();
+    private ObservableList<CourseDetails> list = FXCollections.observableArrayList();
     
     private Label studentID;
     private TextField studentIDField;
@@ -130,14 +139,13 @@ public class LoginScreen extends Application {
 
         startScene = new Scene(signInWindow);
 
-        
+        window.getIcons().add(new Image("itemsReq/utrgv.png"));
         window.setScene(startScene);
         window.setTitle("UTRGV VaqPack");
         window.show();
         window.setFullScreen(true); //Sets to Full Screen
         
        
-
         
         logoutBtn.setOnAction((ActionEvent e) -> {
 //            mb.getMenus().clear();
@@ -212,15 +220,18 @@ public class LoginScreen extends Application {
                 {
                      window.setScene(getMainWindowScene());
                           window.setFullScreen(true);
+                          weekTab.setCoursesList(userQueries.getList());
                 }
                 else
                 {
                     errorMessage.setText("Incorrect Student ID or Password!");
                     errorMessage.setTextFill(Color.RED);
                 }
-                
+                 
                 studentIDField.clear();
                 passwordField.clear();
+                
+                
                 
         });
 
@@ -330,7 +341,7 @@ public class LoginScreen extends Application {
         //cancel button 
         cancelBtn = new Button("Cancel");
         cancelBtn.setOnAction((ActionEvent e) -> {
-            submitButtonActionPerformed(e);
+            signInWindow.setCenter(getSignInGrid());
           errorMessage.setText("");
         });
         
@@ -361,6 +372,16 @@ public class LoginScreen extends Application {
         signInWindow.setCenter(getSignInGrid());
         
     }
+    
+    private void logoutButtonActionPerformed (ActionEvent e) { 
+        
+//        userQueries.addCourse(studentIDField.getText());
+        
+        signInWindow.setCenter(getSignInGrid());
+        
+    }
+    
+    
 
     /**
      * @return the studentIDField
@@ -377,5 +398,9 @@ public class LoginScreen extends Application {
     }
 
     
+    
 }
 
+
+
+//        weekTab.setCoursesList(userQueries.getList());

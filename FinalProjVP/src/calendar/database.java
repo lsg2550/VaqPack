@@ -45,7 +45,7 @@ public class database {
     private static Connection dbconnect() {
         try {
             Class.forName("java.sql.DriverManager");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/information", "root", "VegetaSanHer277");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/log", "root", "password");
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e);
             return null;
