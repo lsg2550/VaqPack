@@ -1,0 +1,15 @@
+Edinburg Campus:
+Address: 1201 W University DR, Edinburg, TX 76539
+Phone: (956) 665-2252
+Hours:
+Day		Hours
+Mon		7:30am-6:00pm
+Tue		7:30am-6:00pm
+Wed		7:30am-6:00pm
+Thu		7:30am-6:00pm
+Fri		7:30am-4:00pm
+Sat		CLOSED
+Sun		CLOSED
+
+Want to know about Brownsville's bookstore information? 
+	Change the campus to Brownsville.
